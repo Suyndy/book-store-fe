@@ -1,0 +1,11 @@
+:root {
+  --background-brand: #e80104;
+  --color-brand: #e80104;
+}
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Đảm bảo tính toán kích thước chính xác */
+}

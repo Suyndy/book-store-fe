@@ -1,0 +1,42 @@
+.container {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bottom {
+    :global {
+      th {
+        text-align: center !important;
+        background: rgb(227, 33, 33) !important;
+        color: white !important;
+      }
+    }
+    .table_action {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      svg {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.content_popover {
+  span {
+    font-weight: 600;
+  }
+}
+
+.big_title {
+  font-weight: 600;
+  font-size: 20px;
+}

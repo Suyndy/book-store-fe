@@ -1,0 +1,47 @@
+.title {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-brand);
+}
+.form {
+  :global {
+    .ant-form-item {
+      margin-bottom: 8px !important;
+    }
+  }
+
+  .name_brand_image {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 70% 1fr;
+    .image {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+
+  .price_quantity {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .button {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .Specifications {
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    gap: 20px;
+  }
+
+  .session {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}

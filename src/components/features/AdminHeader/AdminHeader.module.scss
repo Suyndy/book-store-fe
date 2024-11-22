@@ -1,0 +1,21 @@
+.header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: white;
+
+  .header_middle {
+    font-weight: 600;
+  }
+
+  .header_right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    p {
+      font-weight: 600;
+    }
+  }
+}
