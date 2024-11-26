@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "../features/Header/Header";
 import { ConfigProvider } from "antd";
+import { colorBrand } from "../../utils/constant";
 // import Header from "../components/Header";
 
 const MainLayout = () => {
@@ -8,7 +9,7 @@ const MainLayout = () => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#e80104", // Màu primary của ứng dụng
+          colorPrimary: colorBrand, // Màu primary của ứng dụng
         },
       }}
     >

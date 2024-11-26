@@ -14,6 +14,7 @@ import { userService } from "../../../core/services/user.service";
 import { useState } from "react";
 import { useStoreContext } from "../../../context/MyContext";
 import { useNavigate } from "react-router-dom";
+import { colorBrand } from "../../../utils/constant";
 
 const LoginForm = () => {
   const [error, setError] = useState<any>();
@@ -47,7 +48,7 @@ const LoginForm = () => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#e80104", // Màu primary của ứng dụng
+          colorPrimary: colorBrand, // Màu primary của ứng dụng
         },
       }}
     >

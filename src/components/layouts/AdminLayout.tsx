@@ -7,6 +7,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoHomeOutline } from "react-icons/io5";
 import { useStoreContext } from "../../context/MyContext";
 import AdminHeader from "../features/AdminHeader/AdminHeader";
+import { colorBrand } from "../../utils/constant";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const AdminLayout = () => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#e80104", // Màu primary của ứng dụng
+          colorPrimary: colorBrand, // Màu primary của ứng dụng
         },
       }}
     >
