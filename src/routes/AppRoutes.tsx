@@ -14,7 +14,6 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/about" element={<About />} /> */}
         </Route>
         <Route element={<RoleBaseLayout roles={["admin"]} />}>
           <Route element={<AdminLayout />}>
@@ -24,7 +23,6 @@ const AppRoutes = () => {
         </Route>
         <Route path="/admin/login" element={<LoginForm />} />
 
-        {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
