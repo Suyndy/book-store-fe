@@ -3,7 +3,7 @@ const Header = () => {
     <div>
       <header className="py-4 shadow-sm bg-white">
         <div className="container flex items-center justify-between">
-          <a href="index.html">
+          <a href="/">
             <img src="assets/images/logo.svg" alt="Logo" className="w-32" />
           </a>
 
@@ -58,7 +58,7 @@ const Header = () => {
               <div className="text-xs leading-3">Tài khoản</div>
             </a>
             <a
-              href="pages/login.html"
+              href="/signin"
               className="text-red-500 hover:text-red-300 transition font-bold"
             >
               Đăng nhập

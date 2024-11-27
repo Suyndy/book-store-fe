@@ -1,3 +1,4 @@
+import { Pagination } from "antd";
 import CartProduct from "../components/features/CartProduct/CartProduct";
 
 const Home = () => {
@@ -86,6 +87,9 @@ const Home = () => {
           {[1, 2, 3, 4, 5, 6, 7, 8].map((index: number) => (
             <CartProduct key={index} />
           ))}
+        </div>
+        <div className="flex justify-end py-9">
+          <Pagination size="default" defaultCurrent={1} total={50} />
         </div>
       </div>
     </div>
