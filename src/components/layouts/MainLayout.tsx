@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
-import Header from "../features/Header/Header";
 import { ConfigProvider } from "antd";
 import { colorBrand } from "../../utils/constant";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 // import Header from "../components/Header";
 
 const MainLayout = () => {
@@ -18,6 +19,7 @@ const MainLayout = () => {
         <main>
           <Outlet />
         </main>
+        <Footer />
       </div>
     </ConfigProvider>
   );
