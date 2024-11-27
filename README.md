@@ -1,4 +1,5 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Vercel
+## URL Server Deploy: https://book-store-vitamin.vercel.app/
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
