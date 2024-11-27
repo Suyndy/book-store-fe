@@ -7,6 +7,8 @@ import AdminLayout from "../components/layouts/AdminLayout";
 import ManageLaptop from "../pages/admin/ManageLaptop/ManageLaptop";
 import LoginForm from "../pages/admin/Login/Login";
 import RoleBaseLayout from "../components/layouts/RoleBaseLayout";
+import Signin from "../pages/Signin";
+import Signup from "../pages/Signup";
 
 const AppRoutes = () => {
   return (
@@ -14,7 +16,8 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/about" element={<About />} /> */}
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
         <Route element={<RoleBaseLayout roles={["admin"]} />}>
           <Route element={<AdminLayout />}>
@@ -24,7 +27,6 @@ const AppRoutes = () => {
         </Route>
         <Route path="/admin/login" element={<LoginForm />} />
 
-        {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

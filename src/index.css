@@ -1,6 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
-  --background-brand: #e80104;
-  --color-brand: #e80104;
+  --background-brand: #35c2c1;
+  --color-brand: #35c2c1;
 }
 *,
 *::before,
