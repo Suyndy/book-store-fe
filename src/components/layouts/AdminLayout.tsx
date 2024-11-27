@@ -1,16 +1,12 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { Breadcrumb, ConfigProvider, Menu } from "antd";
+import { ConfigProvider, Menu } from "antd";
 import styles from "./AdminLayout.module.scss";
 import { MdLaptopChromebook, MdSupervisorAccount } from "react-icons/md";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
-import { FaUserCircle } from "react-icons/fa";
-import { IoHomeOutline } from "react-icons/io5";
-import { useStoreContext } from "../../context/MyContext";
 import AdminHeader from "../features/AdminHeader/AdminHeader";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
-  const { user } = useStoreContext();
 
   const items: any = [
     {

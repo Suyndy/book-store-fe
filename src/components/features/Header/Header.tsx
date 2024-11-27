@@ -1,5 +1,4 @@
 import { Button } from "antd";
-import { useStoreContext } from "../../../context/MyContext";
 import styles from "./Header.module.scss";
 
 const Header = () => {
