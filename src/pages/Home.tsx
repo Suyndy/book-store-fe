@@ -1,5 +1,5 @@
 import { Pagination } from "antd";
-import CartProduct from "../components/features/CartProduct/CartProduct";
+import CartProduct from "../components/features/ProductCard/ProductCard";
 
 const Home = () => {
   return (

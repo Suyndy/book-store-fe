@@ -149,14 +149,11 @@ const Header = () => {
 
           <div className="flex items-center justify-between flex-grow md:pl-12 py-5">
             <div className="flex items-center space-x-6 capitalize">
-              <a
-                href="index.html"
-                className="text-gray-200 hover:text-white transition"
-              >
+              <a href="/" className="text-gray-200 hover:text-white transition">
                 Trang chủ
               </a>
               <a
-                href="pages/shop.html"
+                href="/shop"
                 className="text-gray-200 hover:text-white transition"
               >
                 Cửa hàng
