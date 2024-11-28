@@ -11,6 +11,7 @@ import Signin from "../pages/Signin";
 import Signup from "../pages/Signup";
 import Shop from "../pages/user/Shop/Shop";
 import ProductDetail from "../pages/user/ProductDetail/ProductDetail";
+import Cart from "../pages/user/Cart/Cart";
 
 const AppRoutes = () => {
   return (
@@ -22,6 +23,7 @@ const AppRoutes = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
         </Route>
         <Route element={<RoleBaseLayout roles={["admin"]} />}>
           <Route element={<AdminLayout />}>
