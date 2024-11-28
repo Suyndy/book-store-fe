@@ -9,6 +9,8 @@ import LoginForm from "../pages/admin/Login/Login";
 import RoleBaseLayout from "../components/layouts/RoleBaseLayout";
 import Signin from "../pages/Signin";
 import Signup from "../pages/Signup";
+import Shop from "../pages/user/Shop/Shop";
+import ProductDetail from "../pages/user/ProductDetail/ProductDetail";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +20,8 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/:id" element={<ProductDetail />} />
         </Route>
         <Route element={<RoleBaseLayout roles={["admin"]} />}>
           <Route element={<AdminLayout />}>

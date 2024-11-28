@@ -1,6 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 const CartProduct = () => {
+  const navigate = useNavigate();
   return (
-    <div className="bg-white shadow rounded overflow-hidden group">
+    <div
+      className="bg-white shadow rounded overflow-hidden group"
+      onClick={() => navigate("/shop/sach-sieu-hay")}
+    >
       <div className="relative">
         <img
           src="assets/images/products/product1.jpg"
