@@ -2,7 +2,7 @@ const Signin = () => {
   return (
     <div className="contain py-16">
       <div className="max-w-lg mx-auto border border-gray-300 px-6 py-7 rounded overflow-hidden">
-        <h2 className="text-2xl uppercase font-medium mb-1">Dăng nhập</h2>
+        <h2 className="text-2xl uppercase font-medium mb-1">Đăng nhập</h2>
         <p className="text-gray-600 mb-6 text-sm">Chào mừng bạn!</p>
         <form action="#" method="post" autoComplete="off">
           <div className="space-y-2">
@@ -46,7 +46,7 @@ const Signin = () => {
                 Ghi nhớ
               </label>
             </div>
-            <a href="#" className="text-primary">
+            <a href="/forgotpassword" className="text-primary">
               Quên mật khẩu?
             </a>
           </div>
