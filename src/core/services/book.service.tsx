@@ -1,7 +1,7 @@
 import api from "../config/api";
 
 class BookService {
-  async getAllBook(): Promise<any[]> {
+  async getAllBook(): Promise<any> {
     const res = await api.get("/books");
     return res.data;
   }

@@ -9,8 +9,6 @@ const Home = () => {
     queryFn: bookService.getAllBook,
   });
 
-  console.log(data);
-
   return (
     <div>
       {/* Banner Section */}
