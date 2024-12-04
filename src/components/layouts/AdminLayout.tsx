@@ -5,6 +5,7 @@ import { MdLaptopChromebook, MdSupervisorAccount } from "react-icons/md";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import AdminHeader from "../features/AdminHeader/AdminHeader";
 import { colorBrand } from "../../utils/constant";
+import { BiCategory } from "react-icons/bi";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -21,6 +22,12 @@ const AdminLayout = () => {
       icon: <MdLaptopChromebook />,
       label: "Quản lý sách",
       onClick: () => navigate("/admin/book"),
+    },
+    {
+      key: "category",
+      icon: <BiCategory />,
+      label: "Quản lý danh mục",
+      onClick: () => navigate("/admin/category"),
     },
     {
       key: "account",

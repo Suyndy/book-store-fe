@@ -14,6 +14,7 @@ import ProductDetail from "../pages/user/ProductDetail/ProductDetail";
 import Cart from "../pages/user/Cart/Cart";
 import ForgotPassword from "../pages/ForgotPassword";
 import ChangePassword from "../pages/ChangePassword";
+import ManageCategory from "../pages/admin/ManageCategory/ManageCategory";
 
 const AppRoutes = () => {
   return (
@@ -36,9 +37,10 @@ const AppRoutes = () => {
           </Route> */}
         </Route>
         <Route element={<AdminLayout />}>
-            <Route path="/admin" element={<Home />} />
-            <Route path="/admin/book" element={<ManageBook />} />
-          </Route>
+          <Route path="/admin" element={<Home />} />
+          <Route path="/admin/book" element={<ManageBook />} />
+          <Route path="/admin/category" element={<ManageCategory />} />
+        </Route>
         <Route path="/admin/login" element={<LoginForm />} />
 
         <Route path="*" element={<NotFound />} />
