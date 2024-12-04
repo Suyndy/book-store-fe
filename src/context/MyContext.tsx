@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from "react";
 import { userService } from "../core/services/user.service";
-import { laptopService } from "../core/services/laptop.service";
 
 interface MyContextType {
   user?: any;
@@ -41,15 +40,6 @@ export const MyContextProvider: React.FC<{ children: ReactNode }> = ({
         setUser(null);
       } finally {
         setInitApp(true); // Đặt initApp=true sau khi quá trình kiểm tra hoàn tất
-      }
-    })();
-
-    (async () => {
-      try {
-        const res = await laptopService.getOptions();
-        setOptions(res);
-      } catch (error) {
-        setOptions(null);
       }
     })();
   }, []);

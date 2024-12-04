@@ -9,15 +9,16 @@ export const columns: any = [
     dataIndex: "name",
     key: "name",
   },
-  {
-    title: "Thương hiệu",
-    dataIndex: "brand",
-    key: "brand",
-  },
+
   {
     title: "Mô tả",
     dataIndex: "description",
     key: "description",
+  },
+  {
+    title: "Tác giả",
+    dataIndex: "brand",
+    key: "brand",
   },
   {
     title: "Đơn giá",

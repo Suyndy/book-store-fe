@@ -11,19 +11,19 @@ const api = axios.create({
 });
 
 // // Request Interceptor (Optional)
-// api.interceptors.request.use(
-//     (config) => {
-//       // Add authorization token to headers if exists
-//       const token = localStorage.getItem('token'); // Or use sessionStorage or context
-//       if (token) {
-//         config.headers['Authorization'] = `Bearer ${token}`;
-//       }
-//       return config;
-//     },
-//     (error) => {
-//       return Promise.reject(error);
-//     }
-//   );
+api.interceptors.request.use(
+  (config) => {
+    // Add authorization token to headers if exists
+    const token = localStorage.getItem("token"); // Or use sessionStorage or context
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 //   // Response Interceptor (Optional)
 //   api.interceptors.response.use(

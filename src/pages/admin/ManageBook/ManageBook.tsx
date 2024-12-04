@@ -1,4 +1,4 @@
-import { Button, Image, Input, message, Popover, Table } from "antd";
+import { Button, Image, Input, message, Table } from "antd";
 import styles from "./ManageBook.module.scss";
 import { FaPlus } from "react-icons/fa";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -7,23 +7,28 @@ import { FaPenToSquare } from "react-icons/fa6";
 import { AiOutlineDelete } from "react-icons/ai";
 import { columns } from "./utils";
 import ModalAddBook from "../../../components/features/ModalAddBook/ModalAddBook";
-import { useState } from "react";
-import { useStoreContext } from "../../../context/MyContext";
+import { useEffect, useState } from "react";
+import { bookService } from "../../../core/services/book.service";
 const { Search } = Input;
-
-
 const ManageBook = () => {
   const [isShowModal, setIsShowModal] = useState(false);
-  const { options } = useStoreContext();
   const [name, setName] = useState("");
+  const [data, setData] = useState([]);
 
-  const { data, refetch } = useQuery({
-    queryKey: ["laptops", name],
+  const { data: dataBook, refetch } = useQuery({
+    queryKey: ["books", name],
     queryFn: () =>
-      laptopService.getAllLaptop({
-        name,
+      bookService.getAllBook({
+        search: name,
+        per_page: 1000,
       }),
   });
+
+  useEffect(() => {
+    if (dataBook) {
+      setData(dataBook?.data);
+    }
+  }, [dataBook]);
 
   const { mutate: deleteMutation } = useMutation({
     mutationFn: laptopService.deleteLaptop,
@@ -36,47 +41,11 @@ const ManageBook = () => {
     },
   });
 
-  const getNamebyKeyOptions = (key: string, label: string) => {
-    const data = options?.[label].find((item: any) => item.key === key);
-    return data?.name;
-  };
-
-  const renderContent = (item: any) => {
-    return (
-      <div className={styles.content_popover}>
-        <p>
-          <span>Bộ Xử Lý:</span>{" "}
-          {getNamebyKeyOptions(item?.specs.processor, "processors")}
-        </p>
-        <p>
-          {" "}
-          <span>Bộ Nhớ RAM:</span> {getNamebyKeyOptions(item?.specs.ram, "ram")}
-        </p>
-        <p>
-          <span>Dung Lượng Lưu Trữ:</span>{" "}
-          {getNamebyKeyOptions(item?.specs.storage, "storage")}
-        </p>
-        <p>
-          <span>Kích Thước Màn Hình:</span>{" "}
-          {getNamebyKeyOptions(item?.specs.screen, "screenSizes")}
-        </p>
-        <p>
-          <span>Thời Lượng Pin:</span>{" "}
-          {getNamebyKeyOptions(item?.specs.battery, "battery")}
-        </p>
-        <p>
-          <span>Trọng Lượng (kg):</span> {item?.specs.weight}
-        </p>
-      </div>
-    );
-  };
-
   const datas: any = data?.map((item: any) => {
     return {
       key: item?._id,
       image: <Image src={item?.image} preview={false} width={60} />,
       name: item?.name,
-      brand: item?.brand,
       description: item?.description,
       price: item?.price,
       quantity: item?.quantity,
@@ -96,11 +65,6 @@ const ManageBook = () => {
             color="red"
           />
         </div>
-      ),
-      infor: (
-        <Popover content={renderContent(item)}>
-          <div style={{ cursor: "pointer" }}>Xem thêm</div>
-        </Popover>
       ),
     };
   });
@@ -132,10 +96,10 @@ const ManageBook = () => {
     },
   });
 
-  const { data: item } = useQuery({
-    queryKey: ["item-laptop", _id],
-    queryFn: () => (_id ? laptopService.getOneLaptop(_id) : null),
-  });
+  // const { data: item } = useQuery({
+  //   queryKey: ["item-laptop", _id],
+  //   queryFn: () => (_id ? laptopService.getOneLaptop(_id) : null),
+  // });
 
   const handleUpdate = (values: any) => {
     updateLaptop({ data: values, id: _id });
@@ -153,7 +117,7 @@ const ManageBook = () => {
         visible={isShowUpdate}
         onCancel={setIsShowUpdate}
         title={`CHỈNH SỬA THÔNG TIN LAPTOP`}
-        item={item?.laptop}
+        // item={item?.laptop}
       />
       <div className={styles.big_title}>Tất cả sách</div>
       <div className={styles.top}>
