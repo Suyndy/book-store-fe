@@ -19,8 +19,8 @@ const AdminLayout = () => {
     {
       key: "laptop",
       icon: <MdLaptopChromebook />,
-      label: "Quản lý laptop",
-      onClick: () => navigate("/admin/laptop"),
+      label: "Quản lý sách",
+      onClick: () => navigate("/admin/book"),
     },
     {
       key: "account",
@@ -38,7 +38,7 @@ const AdminLayout = () => {
     >
       <div className={styles.layout}>
         <div className={styles.sider_bar}>
-          <div className={styles.brand}>LoWindyAn</div>
+          <div className={styles.brand}>VITAMIN A</div>
           <div>
             <ConfigProvider
               theme={{

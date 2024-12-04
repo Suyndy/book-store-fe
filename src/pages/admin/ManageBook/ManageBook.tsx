@@ -1,16 +1,18 @@
 import { Button, Image, Input, message, Popover, Table } from "antd";
-import styles from "./ManageLaptop.module.scss";
+import styles from "./ManageBook.module.scss";
 import { FaPlus } from "react-icons/fa";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { laptopService } from "../../../core/services/laptop.service";
 import { FaPenToSquare } from "react-icons/fa6";
 import { AiOutlineDelete } from "react-icons/ai";
 import { columns } from "./utils";
-import ModalFormLaptop from "../../../components/features/ModalFormLaptop/ModalFormLaptop";
+import ModalAddBook from "../../../components/features/ModalAddBook/ModalAddBook";
 import { useState } from "react";
 import { useStoreContext } from "../../../context/MyContext";
 const { Search } = Input;
-const ManageLaptop = () => {
+
+
+const ManageBook = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const { options } = useStoreContext();
   const [name, setName] = useState("");
@@ -141,19 +143,19 @@ const ManageLaptop = () => {
 
   return (
     <div className={styles.container}>
-      <ModalFormLaptop
+      <ModalAddBook
         onSubmit={addNewLaptop}
         visible={isShowModal}
         onCancel={setIsShowModal}
       />
-      <ModalFormLaptop
+      <ModalAddBook
         onSubmit={handleUpdate}
         visible={isShowUpdate}
         onCancel={setIsShowUpdate}
         title={`CHỈNH SỬA THÔNG TIN LAPTOP`}
         item={item?.laptop}
       />
-      <div className={styles.big_title}>Danh sách sản phẩm laptop</div>
+      <div className={styles.big_title}>Tất cả sách</div>
       <div className={styles.top}>
         <div>
           <Search
@@ -162,7 +164,7 @@ const ManageLaptop = () => {
             placeholder="Tìm kiếm"
           />
         </div>
-        <Button type="primary" onClick={() => setIsShowModal(true)}>
+        <Button type="default" onClick={() => setIsShowModal(true)}>
           <FaPlus /> Thêm mới
         </Button>
       </div>
@@ -177,4 +179,4 @@ const ManageLaptop = () => {
   );
 };
 
-export default ManageLaptop;
+export default ManageBook;
