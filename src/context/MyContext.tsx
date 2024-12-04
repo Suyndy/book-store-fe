@@ -5,7 +5,7 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { userService } from "../core/services/user.service";
+import { authenticationService } from "../core/services/auth.service";
 
 interface MyContextType {
   user?: any;
@@ -28,13 +28,14 @@ export const MyContextProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("TOKEN");
+      const token = await localStorage.getItem("token");
+
       if (!token) {
         setInitApp(true); // Hoàn tất khởi tạo ngay cả khi không có token
         return setUser(null);
       }
       try {
-        const res = await userService.getUserInfor();
+        const res = await authenticationService.getProfile();
         setUser(res);
       } catch (error) {
         setUser(null);

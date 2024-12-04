@@ -1,64 +1,102 @@
+import { useMutation } from "@tanstack/react-query";
+import { authenticationService } from "../core/services/auth.service";
+import api from "../core/config/api";
+import { useStoreContext } from "../context/MyContext";
+import { Alert, Button, Form, Input, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 const Signin = () => {
+  const navigate = useNavigate();
+  const { setUser } = useStoreContext();
+  const [err, setErr] = useState<any>(null);
+
+  const getProfile = async () => {
+    const res = await api.get("/me");
+    return res.data;
+  };
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: authenticationService.loginEmail,
+    onSuccess: async (res) => {
+      await localStorage.setItem("token", res.token);
+      const userInfor = await getProfile();
+      setUser(userInfor);
+      navigate(userInfor?.is_staff ? "/admin" : "/");
+      message.success("Đặt mật thành công.");
+    },
+    onError: (err: any) => {
+      setErr(
+        err?.status == 401 ? "Sai email hoặc mật khẩu." : "Đã có lỗi xảy ra."
+      );
+    },
+  });
+
+  const handleLogin = (values: any) => {
+    mutate({ email: values?.email, password: values?.password });
+  };
+
   return (
     <div className="contain py-16">
       <div className="max-w-lg mx-auto border border-gray-300 px-6 py-7 rounded overflow-hidden">
         <h2 className="text-2xl uppercase font-medium mb-1">Đăng nhập</h2>
         <p className="text-gray-600 mb-6 text-sm">Chào mừng bạn!</p>
-        <form action="#" method="post" autoComplete="off">
+        <Form onFinish={handleLogin}>
           <div className="space-y-2">
             <div>
               <label htmlFor="email" className="text-gray-600 mb-2 block">
                 Email
               </label>
-              <input
-                type="email"
+              <Form.Item
                 name="email"
-                id="email"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                placeholder="Nhập email"
-              />
+                rules={[
+                  {
+                    required: true,
+                    message: " Email không được bỏ trống.",
+                  },
+                ]}
+              >
+                <Input minLength={8} size="large" placeholder="Email" />
+              </Form.Item>
             </div>
             <div>
               <label htmlFor="password" className="text-gray-600 mb-2 block">
                 Mật khẩu
               </label>
-              <input
-                type="password"
+              <Form.Item
                 name="password"
-                id="password"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                placeholder="*******"
-              />
+                rules={[
+                  {
+                    required: true,
+                    message: " Mật khẩu không được bỏ trống.",
+                  },
+                ]}
+              >
+                <Input.Password
+                  minLength={8}
+                  size="large"
+                  placeholder="*******"
+                />
+              </Form.Item>
             </div>
           </div>
-          <div className="flex items-center justify-between mt-6">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="remember"
-                id="remember"
-                className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-              />
-              <label
-                htmlFor="remember"
-                className="text-gray-600 ml-3 cursor-pointer"
-              >
-                Ghi nhớ
-              </label>
-            </div>
+          <div className="flex items-center justify-end mt-6 mb-6">
             <a href="/forgotpassword" className="text-primary">
               Quên mật khẩu?
             </a>
           </div>
+          {err && <Alert type="error" message={err} showIcon />}
+
           <div className="mt-4">
-            <button
-              type="submit"
-              className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium"
+            <Button
+              htmlType="submit"
+              className="h-10 text-white bg-red-500 w-full"
+              loading={isPending}
             >
               Đăng nhập
-            </button>
+            </Button>
           </div>
-        </form>
+        </Form>
 
         {/* Login with */}
         <div className="mt-6 flex justify-center relative">

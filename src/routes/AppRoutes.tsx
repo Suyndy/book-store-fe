@@ -15,6 +15,8 @@ import Cart from "../pages/user/Cart/Cart";
 import ForgotPassword from "../pages/ForgotPassword";
 import ChangePassword from "../pages/ChangePassword";
 import ManageCategory from "../pages/admin/ManageCategory/ManageCategory";
+import VerifyPage from "../pages/VerifyPage";
+import VerifyPasswordPage from "../pages/VerifyPasswordPage";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +31,11 @@ const AppRoutes = () => {
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/auth/verify-email" element={<VerifyPage />} />
+          <Route
+            path="/auth/verify-password"
+            element={<VerifyPasswordPage />}
+          />
         </Route>
         <Route element={<RoleBaseLayout roles={["admin"]} />}>
           {/* <Route element={<AdminLayout />}>

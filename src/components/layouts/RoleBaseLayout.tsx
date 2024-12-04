@@ -11,7 +11,7 @@ const RoleBaseLayout = ({ roles }: any) => {
     if (!initApp) return;
 
     if (!user || (user && !roles.includes(user.role))) {
-      navigate("/admin/login");
+      navigate("/");
       setIsAuthorized(false);
     } else {
       setIsAuthorized(true);
