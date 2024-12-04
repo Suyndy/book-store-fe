@@ -1,7 +1,16 @@
 import { Pagination } from "antd";
 import CartProduct from "../components/features/ProductCard/ProductCard";
+import { useQuery } from "@tanstack/react-query";
+import { bookService } from "../core/services/book.service";
 
 const Home = () => {
+  const { data } = useQuery({
+    queryKey: ["books-data"],
+    queryFn: bookService.getAllBook,
+  });
+
+  console.log(data);
+
   return (
     <div>
       {/* Banner Section */}
@@ -74,8 +83,8 @@ const Home = () => {
           Sách bán chạy
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map((index: number) => (
-            <CartProduct key={index} />
+          {data?.data?.slice(0, 4).map((item: any, index: number) => (
+            <CartProduct key={index} item={item} />
           ))}
         </div>
       </div>
@@ -84,8 +93,8 @@ const Home = () => {
           Đề xuất cho bạn
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((index: number) => (
-            <CartProduct key={index} />
+          {data?.data?.map((item: any, index: number) => (
+            <CartProduct key={index} item={item} />
           ))}
         </div>
         <div className="flex justify-end py-9">
