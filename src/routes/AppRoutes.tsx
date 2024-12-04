@@ -17,6 +17,7 @@ import ChangePassword from "../pages/ChangePassword";
 import ManageCategory from "../pages/admin/ManageCategory/ManageCategory";
 import VerifyPage from "../pages/VerifyPage";
 import VerifyPasswordPage from "../pages/VerifyPasswordPage";
+import LoginGoogle from "../components/LoginGoogle";
 
 const AppRoutes = () => {
   return (
@@ -32,6 +33,7 @@ const AppRoutes = () => {
           <Route path="/shop/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/auth/verify-email" element={<VerifyPage />} />
+          <Route path="/google" element={<LoginGoogle />} />
           <Route
             path="/auth/verify-password"
             element={<VerifyPasswordPage />}
