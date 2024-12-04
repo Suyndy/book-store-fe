@@ -30,12 +30,12 @@ const AdminHeader = () => {
               </p>
             ),
           },
-          {
-            title: <p>abc</p>,
-          },
+          // {
+          //   title: <p>abc</p>,
+          // },
         ]}
       />
-      <div className={styles.header_middle}>LAPTOP</div>
+      <div className={styles.header_middle}>QUẢN LÝ SÁCH</div>
       <div className={styles.header_right}>
         <p>{user?.name}</p>
         <Dropdown menu={{ items }}>
