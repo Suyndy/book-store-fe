@@ -51,7 +51,7 @@ const AdminLayout = () => {
               theme={{
                 components: {
                   Menu: {
-                    colorItemBgSelected: "var(--color-brand)",
+                    itemSelectedBg: "var(--color-brand)",
                     colorPrimary: "white",
                     colorBgContainer: "white",
                   },

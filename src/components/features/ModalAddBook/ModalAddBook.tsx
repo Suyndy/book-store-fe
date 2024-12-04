@@ -12,11 +12,11 @@ import {
   DatePicker,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useStoreContext } from "../../../context/MyContext";
 import styles from "./ModalAddBook.module.scss";
 import { FaPlus } from "react-icons/fa";
-
-const { RangePicker } = DatePicker;
+import { useQuery } from "@tanstack/react-query";
+import { categoryService } from "../../../core/services/category.service";
+import dayjs from "dayjs";
 
 const ModalAddBook = ({
   visible,
@@ -27,24 +27,39 @@ const ModalAddBook = ({
 }: any) => {
   const [form] = Form.useForm();
   const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const { options } = useStoreContext();
+
+  const { data: categoryData, refetch } = useQuery({
+    queryKey: ["category"],
+    queryFn: categoryService.getAllCategory,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [categoryData, refetch]);
 
   const handleImageUpload = (file: any) => {
     const reader = new FileReader();
     reader.onload = () => {
-      setImageBase64(reader.result as string);
+      const base64 = reader.result as string;
+      setImageBase64(base64);
+      form.setFieldsValue({ image: base64 });
     };
     reader.onerror = () => {
-      message.error("Failed to upload image");
+      message.error("Không thể tải hình ảnh lên");
     };
     reader.readAsDataURL(file);
-    return false; // Chặn upload mặc định của antd
+    return false;
   };
 
   const handleSubmit = (values: any) => {
-    onSubmit({ ...values, image: imageBase64 });
+    const publishedAt = values.published_at
+      ? values.published_at.format("YYYY-MM-DD HH:mm:ss")
+      : null;
+
+    onSubmit({ ...values, image: imageBase64, published_at: publishedAt });
     form.resetFields();
     onCancel(false);
+    refetch();
   };
 
   const handleCancel = () => {
@@ -55,8 +70,13 @@ const ModalAddBook = ({
 
   useEffect(() => {
     if (item) {
-      form.setFieldsValue(item);
-      setImageBase64(item?.image);
+      form.setFieldsValue({
+        ...item,
+        published_at: item?.published_at ? dayjs(item.published_at) : null,
+      });
+      setImageBase64(item?.image || null);
+    } else {
+      setImageBase64(null);
     }
   }, [item, visible]);
 
@@ -79,16 +99,15 @@ const ModalAddBook = ({
         <div className={styles.session}>Thông tin chung</div>
         <div className={styles.name_brand_image}>
           <div>
-
             <Form.Item
-              name="category"
+              name="category_id"
               label="Danh mục"
               rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
             >
-              <Select placeholder="Chọn danh mục" style={{ height: '40px' }}>
-                {options?.brands?.map((item: any) => (
-                  <Select.Option key={item.key} value={item.key}>
-                    {item.name}
+              <Select placeholder="Chọn danh mục" style={{ height: "40px" }}>
+                {categoryData?.map((category: any) => (
+                  <Select.Option key={category.id} value={category.id}>
+                    {category.name}
                   </Select.Option>
                 ))}
               </Select>
@@ -101,27 +120,21 @@ const ModalAddBook = ({
                 { required: true, message: "Vui lòng nhập tên sản phẩm" },
               ]}
             >
-              <Input placeholder="Nhập tên sản phẩm" style={{ height: '40px' }} />
+              <Input
+                placeholder="Nhập tên sản phẩm"
+                style={{ height: "40px" }}
+              />
             </Form.Item>
 
             <Form.Item
               name="author"
               label="Tác giả"
-              rules={[
-                { required: true, message: "Vui lòng nhập tên tác giả" },
-              ]}
+              rules={[{ required: true, message: "Vui lòng nhập tên tác giả" }]}
             >
-              <Input placeholder="Nhập tên tác giả" style={{ height: '40px' }} />
-            </Form.Item>
-
-            <Form.Item
-              name="manufacturer"
-              label="Nhà xuất bản"
-              rules={[
-                { required: true, message: "Vui lòng nhập tên nhà xuất bản" },
-              ]}
-            >
-              <Input placeholder="Nhập tên nhà xuất bản" style={{ height: '40px' }} />
+              <Input
+                placeholder="Nhập tên tác giả"
+                style={{ height: "40px" }}
+              />
             </Form.Item>
 
             <Form.Item
@@ -131,9 +144,19 @@ const ModalAddBook = ({
                 { required: true, message: "Vui lòng chọn ngày xuất bản" },
               ]}
             >
-              <RangePicker format="YYYY-MM-DD" style={{ height: '40px', width: '100%' }} />
+              <DatePicker
+                format="YYYY-MM-DD"
+                style={{ height: "40px", width: "100%" }}
+              />
             </Form.Item>
 
+            <Form.Item
+              name="isbn"
+              label="Mã ISBN"
+              rules={[{ required: true, message: "Vui lòng nhập mã ISBN" }]}
+            >
+              <Input placeholder="Nhập mã ISBN" style={{ height: "40px" }} />
+            </Form.Item>
 
             <div className={styles.price_quantity}>
               <Form.Item
@@ -145,27 +168,35 @@ const ModalAddBook = ({
               >
                 <InputNumber
                   placeholder="Nhập giá sản phẩm"
-                  style={{ width: "100%", height: '40px' }}
+                  style={{ width: "100%", height: "40px" }}
                   min={0}
+                  className={styles.input_number}
                 />
               </Form.Item>
 
-
               <Form.Item
-                name="isbn"
-                label="Mã ISBN"
-                rules={[
-                  { required: true, message: "Vui lòng nhập mã ISBN" },
-                ]}
+                name="quantity"
+                label="Số lượng"
+                rules={[{ required: true, message: "Vui lòng nhập số lượng" }]}
               >
-                <Input placeholder="Nhập mã ISBN" style={{ height: '40px' }} />
+                <Input placeholder="Nhập số lượng" style={{ height: "40px" }} />
               </Form.Item>
             </div>
           </div>
-          <Form.Item>
-            <div style={{ textAlign: "center", marginBottom: "8px" }}>
-              Tải Ảnh Lên
-            </div>
+          <Form.Item
+            name="image"
+            rules={[
+              {
+                required: true,
+                message: (
+                  <div className="text-center mt-2.5 text-red-500">
+                    Vui lòng tải lên ảnh
+                  </div>
+                ),
+              },
+            ]}
+          >
+            <div className="text-center mb-2">Tải ảnh lên</div>
             <div className={styles.image}>
               <Avatar shape="square" size={130} src={imageBase64}>
                 <FaPlus size={24} />
@@ -183,13 +214,11 @@ const ModalAddBook = ({
 
         <Form.Item
           name="description"
-          label="Mô Tả"
+          label="Mô tả"
           rules={[{ required: true, message: "Vui lòng nhập mô tả sản phẩm" }]}
         >
           <Input.TextArea placeholder="Nhập mô tả sản phẩm" rows={4} />
         </Form.Item>
-
-
 
         <div className={styles.button}>
           <Button onClick={handleCancel}>Hủy</Button>
