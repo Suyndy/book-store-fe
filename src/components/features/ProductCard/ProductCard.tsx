@@ -35,7 +35,7 @@ const CartProduct = ({ item }: any) => {
       </div>
       <div className="pt-4 pb-3 px-4">
         <a href="#">
-          <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+          <h4 className="uppercase font-medium text-x mb-2 text-gray-800 hover:text-primary transition">
             {item?.title}
           </h4>
           <h6>{item?.author}</h6>

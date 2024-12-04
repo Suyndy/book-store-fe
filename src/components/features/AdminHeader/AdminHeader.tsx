@@ -7,7 +7,7 @@ import styles from "./AdminHeader.module.scss";
 const AdminHeader = () => {
   const { user, setUser } = useStoreContext();
   const handleSignOut = () => {
-    localStorage.removeItem("TOKEN");
+    localStorage.removeItem("token");
     setUser(null);
   };
 
