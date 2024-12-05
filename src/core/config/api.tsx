@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an Axios instance with default configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // Replace with your base URL
+  baseURL: import.meta.env.VITE_API_URL || 'https://book.suyndy.id.vn/api', // Replace with your base URL
   timeout: 5000, // Set a timeout (optional)
   headers: {
     "Content-Type": "application/json",
