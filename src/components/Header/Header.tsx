@@ -1,10 +1,27 @@
+import { useNavigate } from "react-router-dom";
+import { useStoreContext } from "../../context/MyContext";
+import { Button, Popover } from "antd";
+import { useState } from "react";
+
 const Header = () => {
+  const { user, setUser } = useStoreContext();
+  const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearch = () => {
+    if (searchInput.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchInput)}`);
+    } else {
+      navigate(`/shop`);
+    }
+  };
+
   return (
     <div>
       <header className="py-4 shadow-sm bg-white">
         <div className="container flex items-center justify-between">
-          <a href="/">
-            <img src="assets/images/logo.svg" alt="Logo" className="w-32" />
+          <a href="/" className="text-2xl font-bold text-red-500">
+            VITAMIN A
           </a>
 
           <div className="w-full max-w-xl relative flex">
@@ -15,6 +32,9 @@ const Header = () => {
               type="text"
               name="search"
               id="search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               className="w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none hidden md:flex"
               placeholder="Tìm kiếm"
             />
@@ -23,9 +43,11 @@ const Header = () => {
             </button>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <a
-              href="/cart"
+          <div className="flex items-center space-x-4 cursor-pointer">
+            <div
+              onClick={() => {
+                navigate(user ? "/cart" : "/signin");
+              }}
               className="text-center text-gray-700 hover:text-primary transition relative"
             >
               <div className="text-2xl">
@@ -35,22 +57,46 @@ const Header = () => {
               <div className="absolute -right-3 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
                 2
               </div>
-            </a>
-            <a
-              href="/signin"
-              className="text-center text-gray-700 hover:text-primary transition relative"
-            >
-              <div className="text-2xl">
-                <i className="fa-regular fa-user"></i>
-              </div>
-              <div className="text-xs leading-3">Tài khoản</div>
-            </a>
-            <a
-              href="/signin"
-              className="text-red-500 hover:text-red-300 transition font-bold"
-            >
-              Đăng nhập
-            </a>
+            </div>
+            {user && (
+              <Popover
+                content={
+                  <Button
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      setUser(null);
+                      navigate("/");
+                    }}
+                  >
+                    Đăng xuất
+                  </Button>
+                }
+              >
+                <p className="text-center text-gray-700 hover:text-primary transition relative">
+                  <div className="text-2xl">
+                    <i className="fa-regular fa-user"></i>
+                  </div>
+                  <div className="text-xs leading-3">{user?.name}</div>
+                </p>
+              </Popover>
+            )}
+            {!user && (
+              <a
+                href="/signup"
+                className="text-blue-500 hover:text-red-300 transition font-bold"
+              >
+                Đăng ký
+              </a>
+            )}
+
+            {!user && (
+              <a
+                href="/signin"
+                className="text-red-500 hover:text-red-300 transition font-bold"
+              >
+                Đăng nhập
+              </a>
+            )}
           </div>
         </div>
       </header>

@@ -1,4 +1,6 @@
 const ChangePassword = () => {
+  // Lấy token và email
+
   return (
     <div className="contain py-16">
       <div className="max-w-lg mx-auto border border-gray-300 px-6 py-7 rounded overflow-hidden">

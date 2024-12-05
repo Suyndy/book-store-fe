@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
-const CartProduct = () => {
+const CartProduct = ({ item }: any) => {
   const navigate = useNavigate();
   return (
     <div
       className="bg-white shadow rounded overflow-hidden group"
-      onClick={() => navigate("/shop/sach-sieu-hay")}
+      onClick={() => navigate(`/shop/${item?.id}`)}
     >
       <div className="relative">
         <img
-          src="assets/images/products/product1.jpg"
-          alt="product 1"
-          className="w-full"
+          src={`${item?.image}`}
+          alt={`product${item?.id}`}
+          className="w-full h-[250px] object-cover"
         />
         <div
           className="absolute inset-0 bg-black bg-opacity-40 flex items-center 
@@ -35,13 +35,15 @@ const CartProduct = () => {
       </div>
       <div className="pt-4 pb-3 px-4">
         <a href="#">
-          <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-            Guyer Chair
+          <h4 className="uppercase font-medium text-x mb-2 text-gray-800 hover:text-primary transition">
+            {item?.title}
           </h4>
-          <h6>Nguyễn Trần Quốc Sang</h6>
+          <h6>{item?.author}</h6>
         </a>
         <div className="flex items-baseline mb-1 space-x-2">
-          <p className="text-xl text-primary font-semibold">$45.00</p>
+          <p className="text-xl text-primary font-semibold">
+            {item?.price} VND
+          </p>
           {/* <p className="text-sm text-gray-400 line-through">$55.90</p> */}
         </div>
       </div>

@@ -1,90 +1,77 @@
+import { useMutation } from "@tanstack/react-query";
+import { Alert, Button, Form, Input, message } from "antd";
+import { useForm } from "antd/es/form/Form";
+import { authenticationService } from "../core/services/auth.service";
+import { useState } from "react";
+
 const Signup = () => {
+  const [form] = useForm();
+  const [alert, setAlert] = useState<any>(null);
+  const { mutate, isPending } = useMutation({
+    mutationFn: authenticationService.signupEmail,
+    onSuccess: () => {
+      setAlert("Đã gửi liên kết xác thực đăng ký đến email của bạn.");
+      form.resetFields();
+    },
+    onError: () => {
+      message.error("Email đã tồn tại");
+      setAlert(null);
+    },
+  });
+
+  const handleSubmit = (values: any) => {
+    mutate(values);
+  };
+
   return (
     <div className="contain py-16">
       <div className="max-w-lg mx-auto border border-gray-300 px-6 py-7 rounded overflow-hidden">
         <h2 className="text-2xl uppercase font-medium mb-1">Tạo tài khoản</h2>
         <p className="text-gray-600 mb-6 text-sm">Đăng ký tài khoản</p>
-        <form action="#" method="post" autoComplete="off">
+        <Form form={form} onFinish={handleSubmit}>
           <div className="space-y-2">
             <div>
               <label htmlFor="name" className="text-gray-600 mb-2 block">
                 Họ tên
               </label>
-              <input
-                type="text"
+              <Form.Item
                 name="name"
-                id="name"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                placeholder="Nhập họ tên"
-              />
+                rules={[
+                  { required: true, message: "Tên không được bỏ trống." },
+                ]}
+              >
+                <Input placeholder="Nhập họ tên" />
+              </Form.Item>
             </div>
             <div>
               <label htmlFor="email" className="text-gray-600 mb-2 block">
                 Email
               </label>
-              <input
-                type="email"
+              <Form.Item
                 name="email"
-                id="email"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                placeholder="youremail.@domain.com"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="text-gray-600 mb-2 block">
-                Mật khẩu
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                placeholder="*******"
-              />
-            </div>
-            <div>
-              <label htmlFor="confirm" className="text-gray-600 mb-2 block">
-                Xác nhận mật khẩu
-              </label>
-              <input
-                type="password"
-                name="confirm"
-                id="confirm"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                placeholder="*******"
-              />
-            </div>
-          </div>
-          <div className="mt-6">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="agreement"
-                id="agreement"
-                className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-              />
-              <label
-                htmlFor="agreement"
-                className="text-gray-600 ml-3 cursor-pointer"
+                rules={[
+                  { required: true, message: "Email không được bỏ trống." },
+                  { type: "email", message: "Vui lòng nhập một email hợp lệ." },
+                ]}
               >
-                Tôi đã đọc và đồng ý với
-                <a href="#" className="text-primary">
-                  chính sách & điều khoản.
-                </a>
-              </label>
+                <Input placeholder="youremail.@domain.com" />
+              </Form.Item>
             </div>
           </div>
+
+          {alert && <Alert type="success" message={alert} showIcon />}
+
           <div className="mt-4">
-            <button
-              type="submit"
-              className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium"
+            <Button
+              htmlType="submit"
+              className="block h-10 w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium"
+              loading={isPending}
             >
               Tạo tài khoản
-            </button>
+            </Button>
           </div>
-        </form>
+        </Form>
 
-        {/* login with */}
         <div className="mt-6 flex justify-center relative">
           <div className="text-gray-600 uppercase px-3 bg-white z-10 relative">
             Hoặc
@@ -108,7 +95,7 @@ const Signup = () => {
 
         <p className="mt-4 text-center text-gray-600">
           Bạn đã có tài khoản?{" "}
-          <a href="login.html" className="text-primary">
+          <a href="/signin" className="text-primary">
             Đăng nhập ngay
           </a>
         </p>

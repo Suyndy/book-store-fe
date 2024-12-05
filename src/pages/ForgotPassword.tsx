@@ -1,4 +1,25 @@
+import { useMutation } from "@tanstack/react-query";
+import { Alert, Button, Form, Input, message } from "antd";
+import { authenticationService } from "../core/services/auth.service";
+import { useState } from "react";
+
 const ForgotPassword = () => {
+  const [alert, setAlert] = useState<any>(null);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: authenticationService.forgotPassword,
+    onSuccess: async () => {
+      setAlert("Đã gửi liên kết đặt lại mật khẩu tới email của bạn.");
+    },
+    onError: () => {
+      message.error("Đã có lỗi xảy ra.");
+    },
+  });
+
+  const handleLogin = (values: any) => {
+    mutate({ email: values?.email });
+  };
+
   return (
     <div className="contain py-16">
       <div className="max-w-lg mx-auto border border-gray-300 px-6 py-7 rounded overflow-hidden">
@@ -8,31 +29,37 @@ const ForgotPassword = () => {
         <p className="text-gray-600 mb-6 text-sm">
           Nhập địa chỉ email liên kết với tài khoản Bookstore của bạn.
         </p>
-        <form action="#" method="post" autoComplete="off">
+        <Form onFinish={handleLogin}>
           <div className="space-y-2">
             <div>
               <label htmlFor="email" className="text-gray-600 mb-2 block">
                 Email
               </label>
-              <input
-                type="email"
+              <Form.Item
                 name="email"
-                id="email"
-                className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                placeholder="Nhập email"
-              />
+                rules={[
+                  {
+                    required: true,
+                    message: " Email không được bỏ trống.",
+                  },
+                ]}
+              >
+                <Input minLength={8} size="large" placeholder="Email" />
+              </Form.Item>
             </div>
           </div>
+          {alert && <Alert showIcon type="success" message={alert} />}
 
           <div className="mt-4">
-            <button
-              type="submit"
-              className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium"
+            <Button
+              htmlType="submit"
+              className="h-10 text-white bg-red-500 w-full"
+              loading={isPending}
             >
               Gửi email
-            </button>
+            </Button>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );

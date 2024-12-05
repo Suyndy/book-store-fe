@@ -12,13 +12,7 @@ class UserService {
   }
 
   async getUserInfor() {
-    const token = await localStorage.getItem("TOKEN");
-    const res = await api.get("/users/user-info", {
-      headers: {
-        Authorization: token,
-      },
-    });
-
+    const res = await api.get("/users/user-info");
     return res.data;
   }
 }

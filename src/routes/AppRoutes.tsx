@@ -4,8 +4,7 @@ import MainLayout from "../components/layouts/MainLayout";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import AdminLayout from "../components/layouts/AdminLayout";
-import ManageLaptop from "../pages/admin/ManageLaptop/ManageLaptop";
-import LoginForm from "../pages/admin/Login/Login";
+import ManageBook from "../pages/admin/ManageBook/ManageBook";
 import RoleBaseLayout from "../components/layouts/RoleBaseLayout";
 import Signin from "../pages/Signin";
 import Signup from "../pages/Signup";
@@ -14,6 +13,12 @@ import ProductDetail from "../pages/user/ProductDetail/ProductDetail";
 import Cart from "../pages/user/Cart/Cart";
 import ForgotPassword from "../pages/ForgotPassword";
 import ChangePassword from "../pages/ChangePassword";
+import ManageCategory from "../pages/admin/ManageCategory/ManageCategory";
+import VerifyPage from "../pages/VerifyPage";
+import VerifyPasswordPage from "../pages/VerifyPasswordPage";
+import GuesLayout from "../components/layouts/GuesLayout";
+import LoginGoogle from "../components/LoginGoogle";
+import HomePageAdmin from "../pages/admin/HomePageAdmin/HomePageAdmin";
 
 const AppRoutes = () => {
   return (
@@ -21,22 +26,34 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
+          <Route element={<GuesLayout />}>
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/changepassword" element={<ChangePassword />} />
+            <Route path="/auth/verify-email" element={<VerifyPage />} />
+            <Route path="/google" element={<LoginGoogle />} />
+            <Route
+              path="/auth/verify-password"
+              element={<VerifyPasswordPage />}
+            />
+          </Route>
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-        </Route>
-        <Route element={<RoleBaseLayout roles={["admin"]} />}>
-          <Route element={<AdminLayout />}>
-            <Route path="/admin" element={<Home />} />
-            <Route path="/admin/laptop" element={<ManageLaptop />} />
+          <Route element={<RoleBaseLayout />}>
+            <Route path="/cart" element={<Cart />} />
           </Route>
         </Route>
-        <Route path="/admin/login" element={<LoginForm />} />
-
+        <Route element={<MainLayout />}>
+          <Route path="/cart" element={<Cart />} />
+        </Route>
+        <Route element={<RoleBaseLayout isAdmin={true} />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<HomePageAdmin />} />
+            <Route path="/admin/book" element={<ManageBook />} />
+            <Route path="/admin/category" element={<ManageCategory />} />
+          </Route>
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

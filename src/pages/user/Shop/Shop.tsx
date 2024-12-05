@@ -1,12 +1,66 @@
+import { useQuery } from "@tanstack/react-query";
 import CartProduct from "../../../components/features/ProductCard/ProductCard";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { categoryService } from "../../../core/services/category.service";
+import { bookService } from "../../../core/services/book.service";
+import { useLocation } from "react-router-dom";
 
 const Shop = () => {
-  const [sortOption, setSortOption] = useState("");
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const [name, setName] = useState(queryParams.get("search") || "");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [minPrice, setMinPrice] = useState<string | undefined>();
+  const [maxPrice, setMaxPrice] = useState<string | undefined>();
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortOption(event.target.value);
+  const { data: categoryData, refetch: retchCategory } = useQuery({
+    queryKey: ["category"],
+    queryFn: categoryService.getAllCategory,
+  });
+
+  useEffect(() => {
+    retchCategory();
+  }, []);
+
+  const { data: dataBook, refetch: refetchBook } = useQuery({
+    queryKey: ["books", name, minPrice, maxPrice, selectedCategories],
+    queryFn: () =>
+      bookService.getAllBook({
+        search: name,
+        per_page: 1000,
+        category: selectedCategories.join(","),
+        min_price: minPrice,
+        max_price: maxPrice,
+      }),
+  });
+
+  const handleCategoryChange = (categoryId: string) => {
+    setSelectedCategories((prev) => {
+      if (prev.includes(categoryId)) {
+        return prev.filter((id) => id !== categoryId);
+      }
+      return [...prev, categoryId];
+    });
   };
+
+  useEffect(() => {
+    refetchBook();
+  }, [selectedCategories, minPrice, maxPrice, name]);
+  
+  useEffect(() => {
+    setName(queryParams.get("search") || "");
+  }, [location.search]);
+
+  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMinPrice(value === "" ? undefined : value);
+  };
+
+  const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMaxPrice(value === "" ? undefined : value);
+  };
+
   return (
     <div>
       {/* breadcrumb */}
@@ -191,149 +245,26 @@ const Shop = () => {
                 Thể loại
               </h3>
               <div className="space-y-2">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="cat-1"
-                    id="cat-1"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="cat-1"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Thiếu nhi
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(15)</div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="cat-2"
-                    id="cat-2"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="cat-2"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Văn học
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(9)</div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="cat-3"
-                    id="cat-3"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="cat-3"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Kinh tế
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(21)</div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="cat-4"
-                    id="cat-4"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="cat-4"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Tâm lý
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(10)</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-4">
-              <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">
-                Tác giả
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="brand-1"
-                    id="brand-1"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="brand-1"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Nguyễn Nhật Ánh
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(15)</div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="brand-2"
-                    id="brand-2"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="brand-2"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Anh Khang
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(9)</div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="brand-3"
-                    id="brand-3"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="brand-3"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Mario Puzo
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(21)</div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="brand-4"
-                    id="brand-4"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="brand-4"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Ernest Hemingway
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(10)</div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="brand-5"
-                    id="brand-5"
-                    className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-                  />
-                  <label
-                    htmlFor="brand-5"
-                    className="text-gray-600 ml-3 cursor-pointer"
-                  >
-                    Hector Malot
-                  </label>
-                  <div className="ml-auto text-gray-600 text-sm">(10)</div>
-                </div>
+                {categoryData?.map((category: any) => {
+                  return (
+                    <div className="flex items-center" key={category?.id}>
+                      <input
+                        type="checkbox"
+                        name={category.name}
+                        id={category.id}
+                        className="text-primary focus:ring-0 rounded-sm cursor-pointer"
+                        onChange={() => handleCategoryChange(category.id)}
+                        checked={selectedCategories.includes(category.id)}
+                      />
+                      <label
+                        htmlFor="cat-1"
+                        className="text-gray-600 ml-3 cursor-pointer"
+                      >
+                        {category.name}
+                      </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -346,6 +277,8 @@ const Shop = () => {
                   type="text"
                   name="min"
                   id="min"
+                  value={minPrice || ""}
+                  onChange={handleMinPriceChange}
                   className="w-full border-gray-300 focus:border-primary rounded focus:ring-0 px-3 py-1 text-gray-600 shadow-sm"
                   placeholder="thấp nhất"
                 />
@@ -354,6 +287,8 @@ const Shop = () => {
                   type="text"
                   name="max"
                   id="max"
+                  value={maxPrice || ""}
+                  onChange={handleMaxPriceChange}
                   className="w-full border-gray-300 focus:border-primary rounded focus:ring-0 px-3 py-1 text-gray-600 shadow-sm"
                   placeholder="cao nhất"
                 />
@@ -363,36 +298,10 @@ const Shop = () => {
         </div>
         {/* products */}
         <div className="col-span-3">
-          <div className="flex items-center mb-4">
-            <select
-              name="sort"
-              id="sort"
-              value={sortOption}
-              onChange={handleSortChange}
-              className="w-44 text-sm text-gray-600 py-3 px-4 border-gray-300 shadow-sm rounded focus:ring-primary focus:border-primary"
-            >
-              <option value="">Sắp xếp mặc định</option>
-              <option value="price-low-to-high">Giá từ thấp đến cao</option>
-              <option value="price-high-to-low">Giá từ cao đến thấp</option>
-              <option value="latest">Sản phẩm mới nhất</option>
-            </select>
-
-            {/* <div className="flex gap-2 ml-auto">
-              <div className="border border-primary w-10 h-9 flex items-center justify-center text-white bg-primary rounded cursor-pointer">
-                <i className="fa-solid fa-grip-vertical"></i>
-              </div>
-              <div className="border border-gray-300 w-10 h-9 flex items-center justify-center text-gray-600 rounded cursor-pointer">
-                <i className="fa-solid fa-list"></i>
-              </div>
-            </div> */}
-          </div>
-
           <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
-            {/* Add product listings here */}
-            <CartProduct />
-            <CartProduct />
-            <CartProduct />
-            <CartProduct />
+            {dataBook?.data?.map((item: any) => (
+              <CartProduct key={item?.id} item={item} />
+            ))}
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { MdLaptopChromebook, MdSupervisorAccount } from "react-icons/md";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import AdminHeader from "../features/AdminHeader/AdminHeader";
 import { colorBrand } from "../../utils/constant";
+import { BiCategory } from "react-icons/bi";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -19,8 +20,14 @@ const AdminLayout = () => {
     {
       key: "laptop",
       icon: <MdLaptopChromebook />,
-      label: "Quản lý laptop",
-      onClick: () => navigate("/admin/laptop"),
+      label: "Quản lý sách",
+      onClick: () => navigate("/admin/book"),
+    },
+    {
+      key: "category",
+      icon: <BiCategory />,
+      label: "Quản lý danh mục",
+      onClick: () => navigate("/admin/category"),
     },
     {
       key: "account",
@@ -38,13 +45,13 @@ const AdminLayout = () => {
     >
       <div className={styles.layout}>
         <div className={styles.sider_bar}>
-          <div className={styles.brand}>LoWindyAn</div>
+          <div className={styles.brand}>VITAMIN A</div>
           <div>
             <ConfigProvider
               theme={{
                 components: {
                   Menu: {
-                    colorItemBgSelected: "var(--color-brand)",
+                    itemSelectedBg: "var(--color-brand)",
                     colorPrimary: "white",
                     colorBgContainer: "white",
                   },

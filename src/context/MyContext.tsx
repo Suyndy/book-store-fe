@@ -5,8 +5,7 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { userService } from "../core/services/user.service";
-import { laptopService } from "../core/services/laptop.service";
+import { authenticationService } from "../core/services/auth.service";
 
 interface MyContextType {
   user?: any;
@@ -29,27 +28,19 @@ export const MyContextProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     (async () => {
-      const token = localStorage.getItem("TOKEN");
+      const token = await localStorage.getItem("token");
+
       if (!token) {
         setInitApp(true); // Hoàn tất khởi tạo ngay cả khi không có token
         return setUser(null);
       }
       try {
-        const res = await userService.getUserInfor();
+        const res = await authenticationService.getProfile();
         setUser(res);
       } catch (error) {
         setUser(null);
       } finally {
         setInitApp(true); // Đặt initApp=true sau khi quá trình kiểm tra hoàn tất
-      }
-    })();
-
-    (async () => {
-      try {
-        const res = await laptopService.getOptions();
-        setOptions(res);
-      } catch (error) {
-        setOptions(null);
       }
     })();
   }, []);
