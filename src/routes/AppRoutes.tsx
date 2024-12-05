@@ -14,11 +14,14 @@ import Cart from "../pages/user/Cart/Cart";
 import ForgotPassword from "../pages/ForgotPassword";
 import ChangePassword from "../pages/ChangePassword";
 import ManageCategory from "../pages/admin/ManageCategory/ManageCategory";
+import ManageOrder from "../pages/admin/ManageOrder/ManageOrder";
 import VerifyPage from "../pages/VerifyPage";
 import VerifyPasswordPage from "../pages/VerifyPasswordPage";
 import GuesLayout from "../components/layouts/GuesLayout";
 import LoginGoogle from "../components/LoginGoogle";
 import HomePageAdmin from "../pages/admin/HomePageAdmin/HomePageAdmin";
+import OrderDetail from "../pages/admin/ManageOrder/OrderDetail"
+import PaymentSuccess from "../components/PaymentSuccess";
 
 const AppRoutes = () => {
   return (
@@ -42,6 +45,7 @@ const AppRoutes = () => {
           <Route path="/shop/:id" element={<ProductDetail />} />
           <Route element={<RoleBaseLayout />}>
             <Route path="/cart" element={<Cart />} />
+            <Route path="/payment/success" element={<PaymentSuccess />} />
           </Route>
         </Route>
         <Route element={<MainLayout />}>
@@ -52,6 +56,8 @@ const AppRoutes = () => {
             <Route path="/admin" element={<HomePageAdmin />} />
             <Route path="/admin/book" element={<ManageBook />} />
             <Route path="/admin/category" element={<ManageCategory />} />
+            <Route path="/admin/order" element={<ManageOrder />} />
+            <Route path="/admin/order/:id" element={<OrderDetail />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

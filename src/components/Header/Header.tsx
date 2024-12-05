@@ -1,12 +1,39 @@
 import { useNavigate } from "react-router-dom";
 import { useStoreContext } from "../../context/MyContext";
 import { Button, Popover } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const { user, setUser } = useStoreContext();
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState("");
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const loadCartItems = () => {
+    const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    setCartItems(storedCartItems);
+  };
+
+  useEffect(() => {
+    // Initial load of cart items
+    console.log("Header -> useEffect -> loadCartItems");
+    loadCartItems();
+
+    // Add a listener for changes in localStorage
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "cartItems") {
+        loadCartItems();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup listener on component unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const handleSearch = () => {
     if (searchInput.trim()) {
@@ -17,7 +44,7 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div className="fixed top-0 left-0 right-0 z-[100]">
       <header className="py-4 shadow-sm bg-white">
         <div className="container flex items-center justify-between">
           <a href="/" className="text-2xl font-bold text-red-500">
@@ -45,17 +72,60 @@ const Header = () => {
 
           <div className="flex items-center space-x-4 cursor-pointer">
             <div
-              onClick={() => {
-                navigate(user ? "/cart" : "/signin");
-              }}
-              className="text-center text-gray-700 hover:text-primary transition relative"
+              className="relative"
+              onMouseEnter={() => setIsHovering(true)} // Set isHovering to true on mouse enter
+              onMouseLeave={() => setIsHovering(false)} // Set isHovering to false on mouse leave
             >
-              <div className="text-2xl">
-                <i className="fa-solid fa-bag-shopping"></i>
+              {/* Cart Icon */}
+              <span className="absolute bg-transparent w-[200px] right-0 h-[100px] block top-[50%]">
+              </span>
+              <div
+                onClick={() => {
+                  navigate(user ? "/cart" : "/signin");
+                }}
+                className="text-center text-gray-700 hover:text-primary transition relative cursor-pointer"
+              >
+                <div className="text-2xl">
+                  <i className="fa-solid fa-bag-shopping"></i>
+                </div>
+                <div className="text-xs leading-3">Giỏ hàng</div>
+                <div className="absolute -right-3 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
+                  {cartItems.reduce((total, item) => total + item.quantity, 0)}
+                </div>
               </div>
-              <div className="text-xs leading-3">Giỏ hàng</div>
-              <div className="absolute -right-3 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
-                2
+
+              {/* Cart Dropdown */}
+              <div
+                className={`absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg z-10 transition-opacity duration-300 ${isHovering ? "opacity-100 visible" : "opacity-0 invisible"
+                  }`}
+              >
+                <div className="p-4">
+                  <h3 className="text-sm font-medium text-gray-700">Cart Items</h3>
+                </div>
+                <div className="max-h-64 overflow-y-auto">
+                  {cartItems.map((item, index) => (
+                    <div key={index} className="flex items-center p-2 border-b">
+                      <img
+                        src={item.book.image}
+                        alt={item.book.title}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-gray-800">{item.book.title}</p>
+                        <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                        <p className="text-sm text-primary">Price: ${item.book.price}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-4">
+                  <button
+                    onClick={() => navigate("/cart")}
+                    className="w-full py-2 text-sm text-center text-white bg-primary rounded hover:bg-opacity-90 transition"
+                  >
+                    View Cart
+                  </button>
+                </div>
               </div>
             </div>
             {user && (
@@ -65,7 +135,7 @@ const Header = () => {
                     onClick={() => {
                       localStorage.removeItem("token");
                       setUser(null);
-                      navigate("/");
+                      navigate("/signin");
                     }}
                   >
                     Đăng xuất
@@ -99,7 +169,7 @@ const Header = () => {
             )}
           </div>
         </div>
-      </header>
+      </header >
 
       <nav className="bg-gray-800">
         <div className="container flex">
@@ -202,7 +272,7 @@ const Header = () => {
           </div>
         </div>
       </nav>
-    </div>
+    </div >
   );
 };
 

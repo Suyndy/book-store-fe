@@ -56,7 +56,7 @@ const ModalAddBook = ({
       ? values.published_at.format("YYYY-MM-DD HH:mm:ss")
       : null;
 
-    onSubmit({ ...values, image: imageBase64, published_at: publishedAt });
+    onSubmit({ ...values, image: imageBase64, published_at: publishedAt, price: parseInt(values.price, 10) });
     form.resetFields();
     onCancel(false);
     refetch();

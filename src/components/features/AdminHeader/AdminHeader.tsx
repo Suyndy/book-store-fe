@@ -3,12 +3,16 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoHomeOutline } from "react-icons/io5";
 import { useStoreContext } from "../../../context/MyContext";
 import styles from "./AdminHeader.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const AdminHeader = () => {
   const { user, setUser } = useStoreContext();
+  const navigate = useNavigate();
+
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setUser(null);
+    navigate("/signin");
   };
 
   const items: any = [

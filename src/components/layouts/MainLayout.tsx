@@ -16,7 +16,7 @@ const MainLayout = () => {
     >
       <div>
         <Header />
-        <main>
+        <main className="mt-[120px]">
           <Outlet />
         </main>
         <Footer />

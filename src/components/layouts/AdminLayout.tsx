@@ -15,7 +15,7 @@ const AdminLayout = () => {
       key: "invoice",
       icon: <LiaFileInvoiceDollarSolid />,
       label: "Quản lý hóa đơn",
-      // onClick: () => alert("abc"),
+      onClick: () => navigate("/admin/order"),
     },
     {
       key: "laptop",
