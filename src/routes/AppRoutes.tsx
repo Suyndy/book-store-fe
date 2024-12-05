@@ -18,6 +18,7 @@ import VerifyPage from "../pages/VerifyPage";
 import VerifyPasswordPage from "../pages/VerifyPasswordPage";
 import GuesLayout from "../components/layouts/GuesLayout";
 import LoginGoogle from "../components/LoginGoogle";
+import HomePageAdmin from "../pages/admin/HomePageAdmin/HomePageAdmin";
 
 const AppRoutes = () => {
   return (
@@ -46,16 +47,12 @@ const AppRoutes = () => {
         <Route element={<MainLayout />}>
           <Route path="/cart" element={<Cart />} />
         </Route>
-        <Route element={<RoleBaseLayout roles={["admin"]} />}>
-          {/* <Route element={<AdminLayout />}>
-            <Route path="/admin" element={<Home />} />
-            <Route path="/admin/laptop" element={<ManageLaptop />} />
-          </Route> */}
-        </Route>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<Home />} />
-          <Route path="/admin/book" element={<ManageBook />} />
-          <Route path="/admin/category" element={<ManageCategory />} />
+        <Route element={<RoleBaseLayout isAdmin={true} />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<HomePageAdmin />} />
+            <Route path="/admin/book" element={<ManageBook />} />
+            <Route path="/admin/category" element={<ManageCategory />} />
+          </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
