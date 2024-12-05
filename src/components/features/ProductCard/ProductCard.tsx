@@ -9,9 +9,9 @@ const CartProduct = ({ item }: any) => {
     >
       <div className="relative">
         <img
-          src="assets/images/products/product1.jpg"
-          alt="product 1"
-          className="w-full"
+          src={`${item?.image}`}
+          alt={`product${item?.id}`}
+          className="w-full h-[250px] object-cover"
         />
         <div
           className="absolute inset-0 bg-black bg-opacity-40 flex items-center 

@@ -1,10 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { useStoreContext } from "../../context/MyContext";
 import { Button, Popover } from "antd";
+import { useState } from "react";
 
 const Header = () => {
   const { user, setUser } = useStoreContext();
   const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearch = () => {
+    if (searchInput.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchInput)}`);
+    } else {
+      navigate(`/shop`);
+    }
+  };
 
   return (
     <div>
@@ -22,6 +32,9 @@ const Header = () => {
               type="text"
               name="search"
               id="search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               className="w-full border border-primary border-r-0 pl-12 py-3 pr-3 rounded-l-md focus:outline-none hidden md:flex"
               placeholder="Tìm kiếm"
             />
@@ -31,7 +44,7 @@ const Header = () => {
           </div>
 
           <div className="flex items-center space-x-4 cursor-pointer">
-            <p
+            <div
               onClick={() => {
                 navigate(user ? "/cart" : "/signin");
               }}
@@ -44,7 +57,7 @@ const Header = () => {
               <div className="absolute -right-3 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
                 2
               </div>
-            </p>
+            </div>
             {user && (
               <Popover
                 content={
