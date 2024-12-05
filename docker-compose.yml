@@ -1,11 +1,11 @@
-version: '3.8'
-
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - VITE_API_URL=${VITE_API_URL}
+  vite:
+    build: .
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Expose port 8080 for Vite.js app inside Docker
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    driver: bridge
