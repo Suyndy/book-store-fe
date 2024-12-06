@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 const AdminHeader = () => {
   const { user, setUser } = useStoreContext();
   const navigate = useNavigate();
-
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setUser(null);
