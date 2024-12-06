@@ -15,13 +15,14 @@ const ManageBook = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [name, setName] = useState("");
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
 
   const { data: dataBook, refetch } = useQuery({
-    queryKey: ["books", name],
+    queryKey: ["books", name, page],
     queryFn: () =>
       bookService.getAllBook({
         search: name,
-        per_page: 1000,
+        page: page,
       }),
     // enabled: true,
   });
@@ -151,7 +152,14 @@ const ManageBook = () => {
         <Table
           columns={columns}
           dataSource={datas}
-          pagination={{ pageSize: 5 }}
+          pagination={{
+            pageSize: 5,
+            total: dataBook?.total || 0,
+            onChange: (page: number) => {
+              setPage(page);
+              refetch();
+            },
+          }}
         />
       </div>
     </div>

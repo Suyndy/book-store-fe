@@ -86,7 +86,8 @@ const Signup = () => {
             facebook
           </a>
           <a
-            href="#"
+            // href="http://localhost:8000/auth/google"
+            href={`${import.meta.env.VITE_API_URL || 'https://book.suyndy.id.vn/api'}/auth/google`}
             className="w-1/2 py-2 text-center text-white bg-red-600 rounded uppercase font-roboto font-medium text-sm hover:bg-red-500"
           >
             google

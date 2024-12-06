@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { categoryService } from "../../../core/services/category.service";
 import { bookService } from "../../../core/services/book.service";
 import { useLocation } from "react-router-dom";
+import { Pagination } from "antd";
 
 const Shop = () => {
   const location = useLocation();
@@ -12,6 +13,8 @@ const Shop = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<string | undefined>();
   const [maxPrice, setMaxPrice] = useState<string | undefined>();
+  const [page, setPage] = useState(1);
+  const currentItems = 6;
 
   const { data: categoryData, refetch: retchCategory } = useQuery({
     queryKey: ["category"],
@@ -23,11 +26,12 @@ const Shop = () => {
   }, []);
 
   const { data: dataBook, refetch: refetchBook } = useQuery({
-    queryKey: ["books", name, minPrice, maxPrice, selectedCategories],
+    queryKey: ["books", name, minPrice, maxPrice, selectedCategories, page],
     queryFn: () =>
       bookService.getAllBook({
         search: name,
-        per_page: 1000,
+        page: page,
+        pageSize: currentItems,
         category: selectedCategories.join(","),
         min_price: minPrice,
         max_price: maxPrice,
@@ -46,7 +50,7 @@ const Shop = () => {
   useEffect(() => {
     refetchBook();
   }, [selectedCategories, minPrice, maxPrice, name]);
-  
+
   useEffect(() => {
     setName(queryParams.get("search") || "");
   }, [location.search]);
@@ -64,7 +68,7 @@ const Shop = () => {
   return (
     <div>
       {/* breadcrumb */}
-      <div className="container py-4 flex items-center gap-3">
+      <div className="container py-4 flex items-center gap-3 mt-[150px]">
         <a href="../index.html" className="text-primary text-base">
           <i className="fa-solid fa-house" />
         </a>
@@ -302,6 +306,17 @@ const Shop = () => {
             {dataBook?.data?.map((item: any) => (
               <CartProduct key={item?.id} item={item} />
             ))}
+          </div>
+          <div className="w-full flex justify-center py-9 ">
+            <Pagination
+              size="default"
+              pageSize={currentItems}
+              total={dataBook?.total || 0}
+              onChange={(page: number) => {
+                setPage(page);
+                refetchBook();
+              }}
+            />
           </div>
         </div>
       </div>

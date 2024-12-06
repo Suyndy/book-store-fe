@@ -47,7 +47,7 @@ const ProductDetail = () => {
   return (
     <div className="mb-16">
       {/* breadcrumb */}
-      <div className="container py-4 flex items-center gap-3">
+      <div className="container py-4 flex items-center gap-3 mt-[150px]">
         <a href="../index.html" className="text-primary text-base">
           <i className="fa-solid fa-house"></i>
         </a>

@@ -2,18 +2,26 @@ import { Pagination } from "antd";
 import CartProduct from "../components/features/ProductCard/ProductCard";
 import { useQuery } from "@tanstack/react-query";
 import { bookService } from "../core/services/book.service";
+import { useState } from "react";
 
 const Home = () => {
-  const { data } = useQuery({
-    queryKey: ["books-data"],
-    queryFn: bookService.getAllBook,
+  const [page, setPage] = useState(1);
+  const currentItems = 8;
+
+  const { data, refetch } = useQuery({
+    queryKey: ["books-data", page],
+    queryFn: () =>
+      bookService.getAllBook({
+        page: page,
+        pageSize: currentItems,
+      }),
   });
 
   return (
     <div>
       {/* Banner Section */}
       <div
-        className="bg-cover bg-no-repeat bg-center py-20"
+        className="bg-cover bg-no-repeat bg-center py-20 mt-[145px]"
         style={{ backgroundImage: "url('assets/images/banner-bg.png')" }}
       >
         <div className="container">
@@ -95,8 +103,16 @@ const Home = () => {
             <CartProduct key={index} item={item} />
           ))}
         </div>
-        <div className="flex justify-end py-9">
-          <Pagination size="default" defaultCurrent={1} total={50} />
+        <div className="flex justify-center py-9">
+          <Pagination
+            size="default"
+            pageSize={currentItems}
+            total={data?.total || 0}
+            onChange={(page: number) => {
+              setPage(page);
+              refetch();
+            }}
+          />
         </div>
       </div>
     </div>
